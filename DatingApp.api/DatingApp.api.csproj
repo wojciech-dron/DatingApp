@@ -8,6 +8,12 @@
     </VisualStudio>
   </ProjectExtensions>
   <ItemGroup>
+    <Compile Remove="Areas\**" />
+    <Content Remove="Areas\**" />
+    <EmbeddedResource Remove="Areas\**" />
+    <None Remove="Areas\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -21,11 +27,5 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Areas\spa\Controllers\" />
-    <Folder Include="Areas\spa\Data\" />
-    <Folder Include="Areas\spa\Models\" />
-    <Folder Include="Areas\spa\Views\" />
   </ItemGroup>
 </Project>
