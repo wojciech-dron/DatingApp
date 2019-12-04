@@ -1,10 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\DatingApi-spa",
-    "\\DatingApi-spa\\src",
-    "\\DatingApi-spa\\src\\app"
+    "\\DatingApp.api"
   ],
-  "SelectedNode": "\\DatingApi-spa\\src\\main.ts",
+  "SelectedNode": "\\DatingApp.api\\DatingApp.api.csproj",
   "PreviewInSolutionExplorer": false
 }
