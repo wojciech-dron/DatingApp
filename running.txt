@@ -1,0 +1,17 @@
+"dotnet run" - api
+"ng serve" - angular
+
+extenisions Visual Studio Code:
+angular files
+angular language service
+angular snippets
+angular2-switcher
+Auto Rename Tag
+Bracket Pair Colorizer 2
+C#
+C# extenisions
+debugger for chrome
+material icon theme
+nuget package manager   !!!
+Prettier
+TSLint
