@@ -1,5 +1,10 @@
-"dotnet run" - api
-"ng serve" - angular
+api:
+cd .\DatingApp.api
+dotnet watch run
+
+angular:
+cd .\DatingApp-spa
+ng serve
 
 extenisions Visual Studio Code:
 angular files
