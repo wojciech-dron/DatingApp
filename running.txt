@@ -20,3 +20,9 @@ material icon theme
 nuget package manager   !!!
 Prettier
 TSLint
+
+
+
+
+Postman do api
+db browser for SQLite
