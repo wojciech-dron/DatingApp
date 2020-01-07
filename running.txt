@@ -22,7 +22,8 @@ Prettier
 TSLint
 
 
-
-
 Postman do api
 db browser for SQLite
+
+
+user.service.ts 'authorization' quotes (10 line)
