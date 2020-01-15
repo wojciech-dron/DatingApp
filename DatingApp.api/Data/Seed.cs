@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace DatingApp.api.Data
 {
-    public  class Seed
+    public class Seed
     {
         public static void SeedUsers(DataContext context)
         {
