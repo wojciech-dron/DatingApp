@@ -12,6 +12,9 @@ export class MemberCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if (this.user.photoUrl == null) {
+      this.user.photoUrl = '../../../assets/user.jpg';
+    }
   }
 
 }

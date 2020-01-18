@@ -28,17 +28,17 @@ export class AuthService {
         // const user = response; // pominiety etap z deklaracją obiektu user
         if (response) {
           localStorage.setItem('token', response.token);
-          localStorage.setItem('user', JSON.stringify(response.user))
+          localStorage.setItem('user', JSON.stringify(response.user));
           this.decodedToken = this.jwtHelper.decodeToken(response.token);
           this.currentUser = response.user;
           this.changeNumberPhoto(this.currentUser.photoUrl);
         }
       })
-    )
+    );
   }
 
-  register(model: any) {
-    return this.http.post(this.baseUrl + 'register', model);
+  register(user: User) {
+    return this.http.post(this.baseUrl + 'register', user);
   }
 
   loggedIn() {
