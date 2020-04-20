@@ -1,7 +1,7 @@
 <div class="container mt-4">
   <div class="row">
     <div class="col-sm-4">
-        <h1>Your Profile</h1>
+      <h1>Your Profile</h1>
     </div>
     <div class="col-sm-8">
       <div *ngIf="editform.dirty" class="alert alert-info">
@@ -11,36 +11,36 @@
   </div>
   <div class="row">
     <div class="col-sm-4">
-        <div class="card">
-          <img class="card-img-top img-thumbnail" src="{{photoUrl || '../../../assets/user.jpg'}}" alt="{{user.knownAs}}">
-          <div class="card-body">
-            <div>
-              <strong>Location:</strong>
-              <p>{{user?.city}}, {{user?.country}}</p>
-            </div>
-            <div>
-              <strong>Age:</strong>
-              <p>{{user.age}}</p>
-            </div>
-            <div>
-              <strong>Last Active:</strong>
-              <p>{{user.lastActive | timeAgo}}</p>
-            </div>
-            <div>
-              <strong>Member since:</strong>
-              <p>{{user.created | date: 'mediumDate'}}</p>
-            </div>
+      <div class="card">
+        <img class="card-img-top img-thumbnail" src="{{photoUrl || '../../../assets/user.jpg'}}" alt="{{user.knownAs}}">
+        <div class="card-body">
+          <div>
+            <strong>Location:</strong>
+            <p>{{user?.city}}, {{user?.country}}</p>
           </div>
-          <div class="card-footer">
-              <button [disabled]="!editform.dirty" form="editform" class="btn btn-success btn-block">Save Changes</button>
+          <div>
+            <strong>Age:</strong>
+            <p>{{user.age}}</p>
+          </div>
+          <div>
+            <strong>Last Active:</strong>
+            <p>{{user.lastActive | timeAgo}}</p>
+          </div>
+          <div>
+            <strong>Member since:</strong>
+            <p>{{user.created | date: 'mediumDate'}}</p>
           </div>
         </div>
+        <div class="card-footer">
+          <button [disabled]="!editform.dirty" form="editform" class="btn btn-success btn-block">Save Changes</button>
+        </div>
+      </div>
     </div>
     <div class="col-sm-8">
-        <div class="tab-panel">
-          <tabset class="member-tabset">
-            <tab heading="Edit Profile">
-              <form #editform='ngForm' id="editform" (ngSubmit)="updateUser()">
+      <div class="tab-panel">
+        <tabset class="member-tabset">
+          <tab heading="Edit Profile">
+            <form #editform='ngForm' id="editform" (ngSubmit)="updateUser()">
               <h4>Desciption</h4>
               <textarea name="introduction" rows="6" class="form-control" [(ngModel)]="user.introduction"></textarea>
               <h4>Looking For</h4>
@@ -50,18 +50,18 @@
               <h4>LocationDetails:</h4>
               <div class="form-inline">
                 <label for="city">City</label>
-                <input type="text"name="city" class="form-control" [(ngModel)]="user.city">
+                <input type="text" name="city" class="form-control" [(ngModel)]="user.city">
                 <label for="city">Country</label>
-                <input type="text"name="country" class="form-control" [(ngModel)]="user.country">
+                <input type="text" name="country" class="form-control" [(ngModel)]="user.country">
               </div>
-              </form>
-            </tab>
-            <tab heading="Edit Photos">
-              <app-photo-editor [photos]="user.photos"
-                (getMemberPhotoChange)="updateMainPhoto($event)"></app-photo-editor>
-            </tab>
-          </tabset>
-        </div>
+            </form>
+          </tab>
+          <tab heading="Edit Photos">
+            <app-photo-editor [photos]="user.photos" (getMemberPhotoChange)="updateMainPhoto($event)">
+            </app-photo-editor>
+          </tab>
+        </tabset>
+      </div>
     </div>
   </div>
 </div>

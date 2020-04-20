@@ -5,7 +5,7 @@ namespace DatingApp.api.Models
 {
     public class User
     {
-       public int Id { get; set; }
+        public int Id { get; set; }
         public string Username { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
@@ -20,5 +20,7 @@ namespace DatingApp.api.Models
         public string City { get; set; }
         public string Country { get; set; }
         public ICollection<Photo> Photos { get; set; }
+        public ICollection<Like> Likers { get; set; }
+        public ICollection<Like> Likees { get; set; }
     }
 }
