@@ -96,7 +96,7 @@ namespace DatingApp.api.Controllers
             if (await _repo.SaveAll())
                 return Ok();
 
-            return BadRequest("FAiled to like user");
+            return BadRequest("Failed to like user");
         }
 
     }
