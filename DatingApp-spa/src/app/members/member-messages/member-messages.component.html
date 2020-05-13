@@ -30,9 +30,9 @@
           <div class="chat-body">
             <div class="header">
               <small class="text-muted">
-                <span class="fa fa-clock-o">{{message.messageSent | timeAgo}}</span>
-                <span *ngIf="!message.isRead" class="text-danger ml-1">(unread)</span>
-                <span *ngIf="message.isRead"class="text-success">(Read {{message.dateRead | timeAgo}})</span>
+                <span class="fa fa-clock-o"> {{message.messageSent | timeAgo}}</span>
+                <span *ngIf="!message.isRead" class="fa text-danger ml-1">(unread)</span>
+                <span *ngIf="message.isRead"class="fa text-success ml-1">(Read {{message.dateRead | timeAgo}})</span>
               </small>
               <strong class="primary-font float-right">{{message.senderKnownAs}}</strong>
             </div>
@@ -44,11 +44,14 @@
     </ul>
   </div>
   <div class="card-footer">
-    <form action="">
+    <form #messageForm="ngForm" (ngSubmit)="messageForm.valid && sendMessage()">
       <div class="input-group">
-        <input type="text" class="form-control input-sm" placeholder="send a private message">
+        <input type="text" 
+          [(ngModel)]="newMessage.content"
+          name="content"
+          class="form-control input-sm" placeholder="send a private message">
         <div class="inputgroup-append">
-          <button class="btn btn-primary">Send</button>
+          <button class="btn btn-primary" [disabled]="!messageForm.valid">Send</button>
         </div>
       </div>
     </form>
