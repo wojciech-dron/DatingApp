@@ -11,7 +11,7 @@ namespace DatingApp.api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Sqlite:Autoincrement", true), //other annotation if we are using other db provider and every migration
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

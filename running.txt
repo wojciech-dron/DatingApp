@@ -30,3 +30,5 @@ user.service.ts 'authorization' quotes (10 line)
 
 Winforms maybe
 
+npm warnings:
+npm install -g npm-install-peers
