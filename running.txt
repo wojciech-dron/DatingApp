@@ -6,6 +6,17 @@ angular:
 cd .\DatingApp-spa
 ng serve
 
+pubish:
+ng build --prod
+dotnet publish --configuration Release
+
+restore:
+cd .\DatingApp.api
+dotnet restore
+
+pamiętać o connectionstringach i apiurl (production i development mode we froncie i backu) podczas publikowania
+iis (Windows)
+
 extenisions Visual Studio Code:
 angular files
 angular language service

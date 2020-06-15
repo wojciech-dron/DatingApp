@@ -23,7 +23,7 @@
     },
     "DatingApp.api": {
       "commandName": "Project",
-      "launchUrl": "weatherforecast",
+      "launchUrl": "datingapp",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
