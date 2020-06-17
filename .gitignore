@@ -1,0 +1,14 @@
+# Directories
+.vscode/
+.vs/
+bin/
+obj/
+wwwroot/
+
+# Database
+*datingapp.db*
+*.db*
+*.dtbcache*
+
+# User files
+*.csproj.user
