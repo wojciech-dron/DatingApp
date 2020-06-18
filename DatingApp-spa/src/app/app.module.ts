@@ -39,6 +39,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { AdminComponent } from './admin/admin.component';
 
 
 export function tokenGetter() {
@@ -67,7 +68,8 @@ export class CustomHammerConfig extends HammerGestureConfig  {
       MemberEditComponent,
       PhotoEditorComponent,
       TimeAgoPipe,
-      MemberMessagesComponent
+      MemberMessagesComponent,
+      AdminComponent
    ],
    imports: [
       BrowserModule,
