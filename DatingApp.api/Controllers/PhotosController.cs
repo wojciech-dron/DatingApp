@@ -74,6 +74,7 @@ namespace DatingApp.api.Controllers
 
             photoForCreationDto.Url = uploadResult.Uri.ToString();
             photoForCreationDto.PublicId = uploadResult.PublicId;
+            photoForCreationDto.IsApproved = false;
 
             var photo = _mapper.Map<Photo>(photoForCreationDto);
 
@@ -103,8 +104,12 @@ namespace DatingApp.api.Controllers
                 return Unauthorized();
 
             var photoFromRepo = await _repo.GetPhoto(id);
+
             if (photoFromRepo.IsMain)
                 return BadRequest("This is already main photo");
+
+            if (!(photoFromRepo.IsApproved ?? true))
+                return BadRequest("This phoo is not approved yet");
 
             var currentMainPhoto = await _repo.GetMainPhotoForUser(userId);
 
@@ -115,7 +120,6 @@ namespace DatingApp.api.Controllers
                 return NoContent();
 
             return BadRequest("Could not set photo to main");
-
         }
 
         [HttpDelete("{id}")]
@@ -124,14 +128,16 @@ namespace DatingApp.api.Controllers
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
-            var user = await _repo.GetUser(userId);
+            var photoFromRepo = await _repo.GetPhoto(id);
 
-            if (!user.Photos.Any(p => p.Id == id))
+            if (photoFromRepo == null)
                 return Unauthorized();
 
-            var photoFromRepo = await _repo.GetPhoto(id);
+            if (photoFromRepo.UserId != userId)
+                return Unauthorized();
+
             if (photoFromRepo.IsMain)
-                return BadRequest("Yoy cannot delete your main photo");
+                return BadRequest("You cannot delete your main photo");
 
             if (photoFromRepo.PublicId != null)
             {

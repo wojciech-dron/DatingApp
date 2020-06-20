@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,13 +26,18 @@ namespace DatingApp.api.Controllers
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IDatingRepository _repo;
 
         public AuthController(IConfiguration config,
-            IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager)
+            IMapper mapper,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            IDatingRepository repo)
         {
             _mapper = mapper;
             _userManager = userManager;
             _signInManager = signInManager;
+            _repo = repo;
             _config = config;
         }
 
@@ -58,15 +64,24 @@ namespace DatingApp.api.Controllers
         {
             var user = await _userManager.FindByNameAsync(userForLoginDTO.Username);
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, userForLoginDTO.Password, false);
+            if (user == null)
+                return Unauthorized();
+
+            var result = await _signInManager
+                .CheckPasswordSignInAsync(user, userForLoginDTO.Password, false);
 
             if (result.Succeeded)
             {
+                var mainPhoto = await _repo.GetMainPhotoForUser(user.Id);
+
+                if (mainPhoto != null)
+                    user.Photos.Append(mainPhoto);
+
                 var appUser = _mapper.Map<UserForListDto>(user);
 
                 return Ok(new
                 {
-                    token = GenerateJwtToken(user),
+                    token = GenerateJwtToken(user).Result,
                     user = appUser
                 });
             }

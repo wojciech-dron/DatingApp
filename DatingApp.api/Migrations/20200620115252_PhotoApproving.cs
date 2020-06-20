@@ -2,12 +2,12 @@
 
 namespace DatingApp.api.Migrations
 {
-    public partial class AddedPublicId : Migration
+    public partial class PhotoApproving : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "PublicId",
+            migrationBuilder.AddColumn<bool>(
+                name: "IsApproved",
                 table: "Photos",
                 nullable: true);
         }
@@ -15,7 +15,7 @@ namespace DatingApp.api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "PublicId",
+                name: "IsApproved",
                 table: "Photos");
         }
     }

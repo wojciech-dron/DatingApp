@@ -42,6 +42,7 @@ namespace DatingApp.api.Data
         public async Task<Photo> GetPhoto(int id)
         {
             var photo = await _context.Photos
+                .IgnoreQueryFilters()
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             return photo;
@@ -182,6 +183,25 @@ namespace DatingApp.api.Data
                 .ToListAsync();
 
                 return messages;
+        }
+
+        public async Task<IEnumerable<Photo>> GetPhotosForModerate()
+        {
+            return await _context.Photos
+                .Include(p => p.User)
+                .Where(p => p.IsApproved == false)
+                .IgnoreQueryFilters()
+                .ToListAsync();
+        }
+
+        public async Task<User> GetCurrentUser(int id)
+        {
+            var user = await _context.Users
+                .Include(p => p.Photos)
+                .IgnoreQueryFilters()
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            return user;
         }
     }
 }

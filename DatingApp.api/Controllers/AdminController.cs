@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using DatingApp.api.Data;
 using DatingApp.api.Dtos;
+using DatingApp.api.Helpers;
 using DatingApp.api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace DatingApp.api.Controllers
 {
@@ -19,11 +24,30 @@ namespace DatingApp.api.Controllers
     {
         private readonly DataContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly IDatingRepository _repo;
+        private readonly IMapper _mapper;
+        private readonly IOptions<CloudinarySettings> _cloudinaryConfig;
+        private readonly Cloudinary _cloudinary;
 
-        public AdminController(DataContext context, UserManager<User> userManager)
+        public AdminController(DataContext context,
+            UserManager<User> userManager,
+            IDatingRepository repo,
+            IMapper mapper,
+            IOptions<CloudinarySettings> cloudinaryConfig)
         {
+            _cloudinaryConfig = cloudinaryConfig;
+
+            Account acc = new Account(
+                _cloudinaryConfig.Value.CloudName,
+                _cloudinaryConfig.Value.ApiKey,
+                _cloudinaryConfig.Value.ApiSecret
+            );
+
+            _cloudinary = new Cloudinary(acc);
             _context = context;
             _userManager = userManager;
+            _repo = repo;
+            _mapper = mapper;
         }
 
         [Authorize(Policy = "RequireAdminRole")]
@@ -76,7 +100,52 @@ namespace DatingApp.api.Controllers
         [HttpGet("photosForModeration")]
         public async Task<IActionResult> GetPhotosForModeration()
         {
-            return Ok("Only Admins and moderators can see this");
+            var photosFromRepo = await _repo.GetPhotosForModerate();
+            var photos = _mapper.Map<IEnumerable<PhotosForDetailedDto>>(photosFromRepo);
+
+            return Ok(photos);
+        }
+
+        [Authorize(Policy = "ModeratePhotoRole")]
+        [HttpPost("approvePhoto/{id}")]
+        public async Task<IActionResult> ApprovePhoto(int id)
+        {
+            var photoFromRepo = await _repo.GetPhoto(id);
+
+            if (photoFromRepo.IsApproved ?? true)
+                return BadRequest("This is already approved photo");
+
+            photoFromRepo.IsApproved = true;
+
+            if (await _repo.SaveAll())
+                return NoContent();
+
+            return BadRequest("Could not approve the photo");
+        }
+
+        [Authorize(Policy = "ModeratePhotoRole")]
+        [HttpDelete("deletePhoto/{id}")]
+        public async Task<IActionResult> DeletePhoto(int id)
+        {
+            var photoFromRepo = await _repo.GetPhoto(id);
+
+            if (photoFromRepo.PublicId != null)
+            {
+                var deleteParams = new DeletionParams(photoFromRepo.PublicId);
+                var result = _cloudinary.Destroy(deleteParams);
+                if (result.Result == "ok")
+                {
+                    _repo.Delete(photoFromRepo);
+                }
+            }
+
+            if (photoFromRepo.PublicId == null)
+                _repo.Delete(photoFromRepo);
+
+            if (await _repo.SaveAll())
+                return Ok();
+
+            return BadRequest("Failed to delete the photo");
         }
     }
 }

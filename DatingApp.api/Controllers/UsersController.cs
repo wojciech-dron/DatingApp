@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -50,10 +51,16 @@ namespace DatingApp.api.Controllers
         [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var user = await _repo.GetUser(id);
-            var useroReturn = _mapper.Map<UserForDetailedDto>(user);
+            var user = new User();
 
-            return Ok(useroReturn);
+            if (id == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+                user = await _repo.GetCurrentUser(id);
+            else
+                user = await _repo.GetUser(id);
+
+            var usersToReturn = _mapper.Map<UserForDetailedDto>(user);
+
+            return Ok(usersToReturn);
         }
 
         [HttpPut("{id}")]
